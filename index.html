@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prio</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
         body { font-family: 'Inter', sans-serif; }
         .task-card { transition: all 0.3s ease; }
         .task-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
@@ -17,515 +17,516 @@
         .priority-low { background-color: #D1FAE5; color: #065F46; }
 
         @keyframes rotate {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-        #app-container {
-  position: relative;
-  z-index: 1;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem 1rem 6rem; /* ada ruang bawah biar scroll enak */
-}
-
-        .gradient {
-        --size: 750px;
-        --speed: 50s;
-        --easing: cubic-bezier(0.8, 0.2, 0.2, 0.8);
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 0;
-        pointer-events: none;
-        width: var(--size);
-        height: var(--size);
-        filter: blur(calc(var(--size) / 8));
-        background-image: radial-gradient(circle at 30% 25%,
-        rgba(56,189,248,0.95) 0%,
-        rgba(99,102,241,0.9) 35%,
-        rgba(16,185,129,0.88) 70%);
-        animation: rotate var(--speed) var(--easing) alternate infinite;
-        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-        transition: top 0.6s ease-out, left 0.6s ease-out; /* ini bikin gerakan smooth */
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        /* pastikan kontainer konten berada di atas gradient */
         #app-container {
-        position: relative;
-        z-index: 1;
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem 6rem;
+        }
+
+        .gradient {
+            --size: 750px;
+            --speed: 50s;
+            --easing: cubic-bezier(0.8, 0.2, 0.2, 0.8);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+            width: var(--size);
+            height: var(--size);
+            filter: blur(calc(var(--size) / 8));
+            background-image: radial-gradient(circle at 30% 25%,
+            rgba(56,189,248,0.95) 0%,
+            rgba(99,102,241,0.9) 35%,
+            rgba(16,185,129,0.88) 70%);
+            animation: rotate var(--speed) var(--easing) alternate infinite;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            transition: top 0.6s ease-out, left 0.6s ease-out;
         }
 
         @media (min-width: 720px) {
-        .gradient { --size: 500px; }
+            .gradient { --size: 500px; }
         }
 
         body {
-        background-color: #071c39 !important;
-        position: absolute;
-        inset: 0;
-        display: flex;
-        place-content: center;
-        align-items: center;
-        overflow: hidden;
-        background-color: #071c39 !important;
-        min-height: 100vh; /* halaman bisa lebih tinggi dari layar */
-        overflow-y: auto; /* biar bisa di-scroll ke bawah */
-        display: block; /* biar konten bisa panjang ke bawah */
-        position: relative; /* gradient tetap bisa diatur */
+            background-color: #071c39 !important;
+            position: relative; 
+            inset: 0;
+            display: block; 
+            min-height: 100vh;
+            overflow-y: auto; 
         }
-        </style>
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
-    <!-- pindahkan gradient ke sini, sebagai sibling #app-container -->
     <div class="gradient" aria-hidden="true"></div>
     <div id="app-container" class="max-w-4xl mx-auto p-4 md:p-8">
         <header id= "header" class="mb-8 text-center text-white space-800">
-            <h1 class="text-4xl md:text-5xl font-extrabold fade-up">Task Prioritizer</h1>
-            <p class="text-white-400">Your Daily College Assignment Assistant</p>
+            <h1 class="text-4xl md:text-5xl font-extrabold fade-up">Prio</h1>
+            <p class="text-white-400">Asisten cerdas untuk memprioritaskan tugas kuliah Anda.</p>
         </header>
+        
         <!-- Elemen UI untuk Login dan Logout -->
         <div id="auth-container" class="mb-6 text-center">
-<!-- Tampilan Login -->
- 
-<!-- LOGIN VIEW -->
-<div id="login-view" class="flex items-center justify-center py-12">
-  <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-8 shadow-lg w-full sm:w-[420px] text-center transition-all duration-500 hover:scale-[1.02]">
-    <h2 class="text-2xl font-bold text-white mb-2">
-      Selamat Datang di <span class="text-blue-300">Prio</span>
-    </h2>
-    <p class="text-slate-300 mb-6 text-sm">
-      Kelola & prioritaskan tugasmu dengan cerdas
-    </p>
+            <!-- LOGIN VIEW -->
+            <div id="login-view" class="flex items-center justify-center py-12">
+                <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-8 shadow-lg w-full sm:w-[420px] text-center transition-all duration-500 hover:scale-[1.02]">
+                    <h2 class="text-2xl font-bold text-white mb-2">
+                        Selamat Datang di <span class="text-blue-300">Prio</span>
+                    </h2>
+                    <p class="text-slate-300 mb-6 text-sm">
+                        Kelola & prioritaskan tugasmu dengan cerdas
+                    </p>
+                    <div class="flex flex-col gap-4">
+                        <button id="login-button" class="bg-white text-slate-700 font-semibold py-2 px-6 rounded-lg shadow-md hover:shadow-lg hover:bg-slate-100 transition-all flex items-center justify-center gap-2 w-full">
+                            <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" class="w-5 h-5">
+                            Login dengan Google
+                        </button>
+                        <button id="guest-login-button" class="bg-gradient-to-r from-blue-600 to-indigo-500 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:from-blue-700 hover:to-indigo-600 transition-all w-full">
+                            Masuk sebagai Tamu
+                        </button>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-6">
+                        Dengan login, Anda menyetujui
+                        <button id="privacy-btn" class="text-blue-300 hover:underline">kebijakan privasi</button>.
+                    </p>
+                </div>
+            </div>
 
-    <!-- Tombol Login -->
-    <div class="flex flex-col gap-4">
-      <button id="login-button"
-        class="bg-white text-slate-700 font-semibold py-2 px-6 rounded-lg shadow-md hover:shadow-lg hover:bg-slate-100 transition-all flex items-center justify-center gap-2 w-full">
-        <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" class="w-5 h-5">
-        Login dengan Google
-      </button>
+            <!-- MODAL KEBIJAKAN PRIVASI -->
+            <div id="privacy-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm">
+                <div class="bg-white/90 rounded-xl shadow-xl w-[90%] sm:w-[420px] p-6 text-slate-700 relative">
+                    <h3 class="text-xl font-bold mb-3 text-center">Kebijakan Privasi</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                        Kami menghormati privasi Anda. Data akun Google Anda hanya digunakan untuk otentikasi login
+                        dan tidak akan dibagikan kepada pihak ketiga tanpa izin Anda.
+                    </p>
+                    <ul class="list-disc list-inside text-sm text-slate-600 mb-4 text-left">
+                        <li>Informasi pribadi tidak disimpan secara permanen di server.</li>
+                        <li>Cookie hanya digunakan untuk menjaga sesi login.</li>
+                        <li>Anda dapat menghapus data login kapan saja melalui tombol Logout.</li>
+                    </ul>
+                    <button id="close-privacy" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-all w-full">
+                        Tutup
+                    </button>
+                </div>
+            </div>
 
-      <button id="guest-login-button"
-        class="bg-gradient-to-r from-blue-600 to-indigo-500 text-white font-semibold py-2 px-6 rounded-lg shadow-md hover:from-blue-700 hover:to-indigo-600 transition-all w-full">
-        Masuk sebagai Tamu
-      </button>
-    </div>
-
-    <p class="text-xs text-slate-400 mt-6">
-      Dengan login, Anda menyetujui
-      <button id="privacy-btn" class="text-blue-300 hover:underline">kebijakan privasi</button>.
-    </p>
-  </div>
-</div>
-
-<!-- MODAL KEBIJAKAN PRIVASI -->
-<div id="privacy-modal"
-  class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm">
-  <div class="bg-white/90 rounded-xl shadow-xl w-[90%] sm:w-[420px] p-6 text-slate-700 relative">
-    <h3 class="text-xl font-bold mb-3 text-center">Kebijakan Privasi</h3>
-    <p class="text-sm text-slate-600 leading-relaxed mb-4">
-      Kami menghormati privasi Anda. Data akun Google Anda hanya digunakan untuk otentikasi login
-      dan tidak akan dibagikan kepada pihak ketiga tanpa izin Anda.
-      <br><br>
-      Dengan menggunakan aplikasi ini, Anda setuju bahwa:
-    </p>
-    <ul class="list-disc list-inside text-sm text-slate-600 mb-4 text-left">
-      <li>Informasi pribadi tidak disimpan secara permanen di server.</li>
-      <li>Cookie hanya digunakan untuk menjaga sesi login.</li>
-      <li>Anda dapat menghapus data login kapan saja melalui tombol Logout.</li>
-    </ul>
-    <button id="close-privacy"
-      class="mt-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-all w-full">
-      Tutup
-    </button>
-  </div>
-</div>
-
-
-<!-- Tampilan Setelah Login -->
-<div id="user-view" class="hidden text-center mt-6">
-  <p class="text-sm text-slate-300 mb-3">Login sebagai <strong id="user-email" class="text-white"></strong></p>
-  <button id="logout-button" class="bg-red-500 text-white font-semibold py-1.5 px-5 text-sm rounded-lg hover:bg-red-600 transition-all shadow-md">Logout</button>
-</div>
-
-</div>
-
-<!-- Konten Utama -->
-<main id="main-content" class="hidden">
-<div class="bg-white p-6 rounded-xl shadow-md mb-8">
-<h2 class="text-xl font-semibold mb-4">Tambah Tugas Baru</h2>
-<!-- Form input -->
-<form id="task-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div class="md:col-span-2"><label for="task-name" class="block text-sm font-medium text-slate-700 mb-1">Nama Dan Mata Kuliah</label><input type="text" id="task-name" placeholder="Contoh: Mengerjakan Bab 1 Skripsi" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
-    <div><label for="task-urgency" class="block text-sm font-medium text-slate-700 mb-1">Urgensi (1-5)</label><input type="range" id="task-urgency" min="1" max="5" value="3" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"><span id="urgency-value" class="text-sm text-slate-500">3 (Sedang)</span></div>
-    <div><label for="task-importance" class="block text-sm font-medium text-slate-700 mb-1">Pentingnya (1-5)</label><input type="range" id="task-importance" min="1" max="5" value="3" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"><span id="importance-value" class="text-sm text-slate-500">3 (Cukup Penting)</span></div>
-    <div class="md:col-span-2"><label for="task-deadline" class="block text-sm font-medium text-slate-700 mb-1">Deadline Tugas (Tanggal)</label><input type="date" id="task-deadline" min="0.5" step="0.5" value="1" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
-    <div class="md:col-span-2"><label for="task-time" class="block text-sm font-medium text-slate-700 mb-1">Deadline Tugas (Jam)</label><input type="number" id="task-time" min="0.5" step="0.5" value="1" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
-    <div class="md:col-span-2"><button type="submit" class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">Prioritaskan & Tambah</button></div>
-</form>
-</div>
-
-<div>
-<!-- Daftar Tugas & Panel Admin -->
-<div class="flex justify-between items-center mb-4">
-<h2 class="text-xl font-semibold">Daftar Tugas Anda (Diurutkan)</h2>
-</div>
-
-<!-- BARU: Panel Admin untuk Download -->
-<div id="admin-panel" class="hidden bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-6">
-    <h3 class="text-lg font-semibold text-yellow-900">Panel Admin</h3>
-        <p class="text-sm text-yellow-700 mb-3">Pilih pengguna untuk mengunduh data tugas mereka.</p>
-        <div class="flex flex-col sm:flex-row gap-2">
-        <select id="user-select-dropdown" class="flex-grow px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="Pilih pengguna untuk mengunduh data" title="Pilih pengguna untuk diunduh">
-        <option value="">Memuat daftar pengguna...</option>
-        </select>
-        <button id="download-button" class="bg-green-600 text-white text-sm font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-        Download Data
-        </button>
-    </div>
-</div>
-
-<div id="task-list" class="space-y-4">
-<p id="loading-tasks" class="text-slate-500 text-center">Memuat tugas...</p>
-</div>
-</div>
-</main>
-</div>
-
-<!-- Firebase SDK -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp, doc, updateDoc, deleteDoc, getDocs, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-document.addEventListener('DOMContentLoaded', () => {
-  console.log("[DEBUG] Halaman HTML selesai dimuat. Memulai skrip.");
-
-  // Konfigurasi Firebase
-  const firebaseConfig = {
-    apiKey: "AIzaSyC4WwUhxG5XROTr5lSHvhDS4zj2Lqmw1U0",
-    authDomain: "asisten-tugas-pribadi.firebaseapp.com",
-    projectId: "asisten-tugas-pribadi",
-    storageBucket: "asisten-tugas-pribadi.appspot.com",
-    messagingSenderId: "994319187177",
-    appId: "1:994319187177:web:58ebbc1fce8645eabd4478"
-  };
-
-  let db, auth, userId, unsubscribeTasks;
-  const appId = 'asisten-tugas-pribadi';
-  const app = initializeApp(firebaseConfig);
-  db = getFirestore(app);
-  auth = getAuth(app);
-  console.log("[DEBUG] Firebase diinisialisasi.");
-
-  // --- Elemen UI ---
-  const loginView = document.getElementById('login-view');
-  const userView = document.getElementById('user-view');
-  const mainContent = document.getElementById('main-content');
-  const userEmailSpan = document.getElementById('user-email');
-  const loginButton = document.getElementById('login-button');
-  const logoutButton = document.getElementById('logout-button');
-  const guestLoginButton = document.getElementById('guest-login-button');
-  const taskForm = document.getElementById('task-form');
-  const taskListDiv = document.getElementById('task-list');
-
-  // Panel Admin
-  const adminPanel = document.getElementById('admin-panel');
-  const userSelectDropdown = document.getElementById('user-select-dropdown');
-  const downloadButton = document.getElementById('download-button');
-
-  // --- Fungsi untuk memuat daftar pengguna (admin) ---
-  const loadUserListForAdmin = async () => {
-    console.log("[DEBUG] Memuat daftar pengguna untuk admin...");
-    try {
-      const usersCollectionRef = collection(db, "users");
-      const snapshot = await getDocs(usersCollectionRef);
-      userSelectDropdown.innerHTML = '';
-      if (snapshot.empty) {
-        userSelectDropdown.innerHTML = '<option value="">Tidak ada pengguna ditemukan</option>';
-        return;
-      }
-      snapshot.forEach(doc => {
-        const userData = doc.data();
-        const userId = doc.id;
-        const userName = userData.email || `Tamu (${userId.substring(0, 8)}...)`;
-        const option = document.createElement('option');
-        option.value = userId;
-        option.textContent = userName;
-        userSelectDropdown.appendChild(option);
-      });
-      adminPanel.classList.remove('hidden');
-    } catch (error) {
-      console.error("[DEBUG] Gagal memuat daftar pengguna:", error);
-      adminPanel.innerHTML = `<p class="text-red-600">Gagal memuat daftar pengguna. Pastikan Security Rules sudah benar.</p>`;
-      adminPanel.classList.remove('hidden');
-    }
-  };
-  
-// Cek admin: semua user Google dianggap admin
-const checkAdminStatus = async (user) => {
-  // Kalau login pakai Google -> bisa akses admin panel
-  if (!user.isAnonymous) {
-    return true;
-  }
-  // Kalau tamu -> tidak bisa akses
-  return false;
-};
-
-
-  // onAuthStateChanged
-  onAuthStateChanged(auth, async (user) => {
-    adminPanel.classList.add('hidden');
-    if (user) {
-      userId = user.uid;
-      userEmailSpan.innerHTML = user.isAnonymous ? `Tamu <span class="font-normal text-slate-400 text-xs">(${user.uid.substring(0, 6)}...)</span>` : user.email;
-      loginView.classList.add('hidden');
-      userView.classList.remove('hidden');
-      mainContent.classList.remove('hidden');
-
-      if (await checkAdminStatus(user)) {
-        console.log("[DEBUG] Status Admin Dikonfirmasi.");
-        loadUserListForAdmin();
-      }
-
-      listenToTasks();
-    } else {
-      userId = null;
-      loginView.classList.remove('hidden');
-      userView.classList.add('hidden');
-      mainContent.classList.add('hidden');
-      if (unsubscribeTasks) unsubscribeTasks();
-      renderTasks([]);
-    }
-  });
-
-  // Path Collection
-  const getTasksCollectionRef = (targetUserId) => {
-    const idToUse = targetUserId || userId;
-    if (!idToUse) {
-      console.error("[DEBUG] GAGAL: getTasksCollectionRef dipanggil tetapi ID pengguna adalah null!");
-      return null;
-    }
-    return collection(db, `artifacts/${appId}/users/${idToUse}/tasks`);
-  }
-
-  // --- Submit Form (dengan deadline) ---
-  taskForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!userId) {
-      alert("Error: Anda tidak terautentikasi.");
-      return;
-    }
-
-    const taskName = document.getElementById('task-name').value;
-    const urgency = parseInt(document.getElementById('task-urgency').value);
-    const importance = parseInt(document.getElementById('task-importance').value);
-    const time = parseFloat(document.getElementById('task-time').value);
-    const deadlineValue = document.getElementById('task-deadline').value;
-    const deadlineDate = deadlineValue ? new Date(deadlineValue) : null;
-
-    const taskData = {
-      name: taskName,
-      urgency,
-      importance,
-      time,
-      deadline: deadlineDate ? { seconds: Math.floor(deadlineDate.getTime() / 1000) } : null,
-      priorityScore: parseFloat(((urgency * 3.5) + (importance * 2.5) - (time * 0.5)).toFixed(2)),
-      status: 'pending',
-      createdAt: serverTimestamp()
-    };
-
-    try {
-      const collectionRef = getTasksCollectionRef(userId);
-      if (!collectionRef) throw new Error("Referensi koleksi tidak valid (userId null).");
-      await addDoc(collectionRef, taskData);
-      e.target.reset();
-      document.getElementById('urgency-value').textContent = '3 (Sedang)';
-      document.getElementById('importance-value').textContent = '3 (Cukup Penting)';
-    } catch (error) {
-      console.error("GAGAL MENAMBAHKAN TUGAS:", error);
-      alert("GAGAL: " + error.message);
-    }
-  });
-
-  // Login/Logout
-  const signInWithGoogle = () => signInWithPopup(auth, new GoogleAuthProvider()).catch(err => console.error(err));
-  const signInAsGuest = () => signInAnonymously(auth).catch(err => console.error(err));
-  const doSignOut = () => signOut(auth).catch(err => console.error(err));
-  loginButton.addEventListener('click', signInWithGoogle);
-  guestLoginButton.addEventListener('click', signInAsGuest);
-  logoutButton.addEventListener('click', doSignOut);
-
-  // Ekspor CSV Admin
-  const exportSelectedUserCsv = async () => {
-    const selectedUserId = userSelectDropdown.value;
-    const selectedUserName = userSelectDropdown.options[userSelectDropdown.selectedIndex].text;
-    if (!selectedUserId) {
-      alert("Silakan pilih seorang pengguna dari daftar.");
-      return;
-    }
-
-    try {
-      const tasksCollectionRef = getTasksCollectionRef(selectedUserId);
-      const tasksSnapshot = await getDocs(query(tasksCollectionRef));
-      const tasks = [];
-      tasksSnapshot.forEach(doc => tasks.push({ id: doc.id, ...doc.data() }));
-
-      if (tasks.length === 0) {
-        alert(`Pengguna "${selectedUserName}" tidak memiliki data tugas untuk diunduh.`);
-        return;
-      }
-
-      const headers = ['ID Tugas', 'Nama Tugas', 'Urgensi', 'Pentingnya', 'Estimasi Waktu (Jam)', 'Tanggal Deadline', 'Jam Deadline' , 'Skor Prioritas', 'Status' , 'Dibuat Tanggal' , 'Jam Repositorynya Dibuat'];
-      const rows = tasks.map(task => {
-        const taskName = (task.name || '').includes(',') ? `"${task.name}"` : task.name;
-        const deadline = task.deadline ? new Date(task.deadline.seconds * 1000).toLocaleString('id-ID') : "Tidak Ditentukan";
-        const createdAt = task.createdAt ? new Date(task.createdAt.seconds * 1000).toLocaleString('id-ID') : 'N/A';
-        return [task.id, taskName, task.urgency, task.importance, task.time, deadline, task.priorityScore, task.status, createdAt].join(',');
-      });
-
-      const csvContent = [headers.join(','), ...rows].join('\n');
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement("a");
-      const url = URL.createObjectURL(blob);
-      const date = new Date().toISOString().slice(0, 10);
-      link.setAttribute("href", url);
-      link.setAttribute("download", `prioritask_data_${selectedUserName}_${date}.csv`);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      console.log("[DEBUG] Ekspor selesai.");
-
-    } catch (error) {
-      console.error("[DEBUG] Gagal mengunduh data:", error);
-      alert("Gagal mengunduh data. Pastikan Security Rules Anda mengizinkan admin membaca data pengguna lain.");
-    }
-  };
-  downloadButton.addEventListener('click', exportSelectedUserCsv);
-
-  // Baca & Tampilkan Data
-  function listenToTasks() {
-    if (!userId) return;
-    if (unsubscribeTasks) unsubscribeTasks();
-    const q = query(getTasksCollectionRef(userId));
-    if (!q) return;
-    unsubscribeTasks = onSnapshot(q, (snapshot) => {
-      let tasks = [];
-      snapshot.forEach(doc => tasks.push({ id: doc.id, ...doc.data() }));
-      tasks.sort((a, b) => b.priorityScore - a.priorityScore);
-      renderTasks(tasks);
-    }, (error) => {
-      console.error("[DEBUG] Gagal mendengarkan data (listenToTasks):", error);
-    });
-  }
-
-  function renderTasks(tasks) {
-    const loadingP = document.getElementById('loading-tasks');
-    if(loadingP) loadingP.style.display = 'none';
-
-    if (tasks.length === 0) {
-      taskListDiv.innerHTML = `<div class="text-center p-8 bg-white rounded-lg shadow-md"><h3 class="font-semibold text-lg">Tidak ada tugas!</h3><p class="text-slate-500 mt-1">Tambahkan tugas baru di atas untuk memulai.</p></div>`;
-      return;
-    }
-
-    taskListDiv.innerHTML = tasks.map(task => {
-      const priorityClass = task.priorityScore > 15 ? 'priority-high' : (task.priorityScore > 8 ? 'priority-medium' : 'low');
-      const priorityText = task.priorityScore > 15 ? 'Tinggi' : (task.priorityScore > 8 ? 'Sedang' : 'Rendah');
-      return `
-      <div class="task-card bg-white p-4 rounded-xl shadow-md flex items-start gap-4 ${task.status === 'completed' ? 'opacity-60' : ''}">
-        <input type="checkbox" onchange="window.toggleTaskStatus('${task.id}', '${task.status}')" class="mt-1.5 h-5 w-5 rounded" ${task.status === 'completed' ? 'checked' : ''}>
-        <div class="flex-grow">
-          <div class="flex justify-between items-start">
-            <p class="font-semibold text-lg ${task.status === 'completed' ? 'line-through' : ''}">${task.name}</p>
-            <span class="priority-badge ${priorityClass}">${priorityText} (${task.priorityScore.toFixed(1)})</span>
-          </div>
-          <div class="text-sm text-slate-500 mt-2 flex gap-4">
-            <span>Urgensi: <strong>${task.urgency}</strong></span>
-            <span>Pentingnya: <strong>${task.importance}</strong></span>
-            <span>Waktu: <strong>${task.time} jam</strong></span>
-            <span>Deadline: <strong>${task.deadline ? new Date(task.deadline.seconds*1000).toLocaleString('id-ID') : 'Tidak Ditentukan'}</strong></span>
-          </div>
+            <!-- Tampilan Setelah Login -->
+            <div id="user-view" class="hidden text-center mt-6">
+                <p class="text-sm text-slate-300 mb-3">Login sebagai <strong id="user-email" class="text-white"></strong></p>
+                <button id="logout-button" class="bg-red-500 text-white font-semibold py-1.5 px-5 text-sm rounded-lg hover:bg-red-600 transition-all shadow-md">Logout</button>
+            </div>
         </div>
-        <button onclick="window.deleteTask('${task.id}')" class="text-slate-400 hover:text-red-500 p-1">
-          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" /></svg>
-        </button>
-      </div>`;
-    }).join('');
-  }
 
-  // Slider
-  const urgencySlider = document.getElementById('task-urgency');
-  const importanceSlider = document.getElementById('task-importance');
-  const urgencyValue = document.getElementById('urgency-value');
-  const importanceValue = document.getElementById('importance-value');
-  const urgencyLabels = { 1: 'Sangat Rendah', 2: 'Rendah', 3: 'Sedang', 4: 'Mendesak', 5: 'Sangat Mendesak' };
-  const importanceLabels = { 1: 'Tidak Penting', 2: 'Kurang Penting', 3: 'Cukup Penting', 4: 'Penting', 5: 'Sangat Penting' };
-  urgencySlider.addEventListener('input', () => { urgencyValue.textContent = `${urgencySlider.value} (${urgencyLabels[urgencySlider.value]})`; });
-  importanceSlider.addEventListener('input', () => { importanceValue.textContent = `${importanceSlider.value} (${importanceLabels[importanceSlider.value]})`; });
+        <!-- Konten Utama -->
+        <main id="main-content" class="hidden">
+            <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+                <h2 class="text-xl font-semibold mb-4">Tambah Tugas (Manual)</h2>
+                <!-- Form input -->
+                <form id="task-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="md:col-span-2"><label for="task-name" class="block text-sm font-medium text-slate-700 mb-1">Nama Dan Mata Kuliah</label><input type="text" id="task-name" placeholder="Contoh: Laporan Praktikum Jaringan Komputer" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
+                    <div><label for="task-urgency" class="block text-sm font-medium text-slate-700 mb-1">Urgensi (1-5)</label><input type="range" id="task-urgency" min="1" max="5" value="3" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"><span id="urgency-value" class="text-sm text-slate-500">3 (Sedang)</span></div>
+                    <div><label for="task-importance" class="block text-sm font-medium text-slate-700 mb-1">Pentingnya (1-5)</label><input type="range" id="task-importance" min="1" max="5" value="3" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"><span id="importance-value" class="text-sm text-slate-500">3 (Cukup Penting)</span></div>
+                    <div class="md:col-span-2"><label for="task-deadline" class="block text-sm font-medium text-slate-700 mb-1">Deadline Tugas (Tanggal)</label><input type="date" id="task-deadline" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
+                    <div class="md:col-span-2"><label for="task-time" class="block text-sm font-medium text-slate-700 mb-1">Estimasi Waktu (Jam)</label><input type="number" id="task-time" min="0.5" step="0.5" value="1" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
+                    <div class="md:col-span-2"><button type="submit" class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">Prioritaskan & Tambah</button></div>
+                </form>
+            </div>
 
-  window.toggleTaskStatus = async (taskId, currentStatus) => {
-    if (!userId) return;
-    const newStatus = currentStatus === 'pending' ? 'completed' : 'pending';
-    const taskDocRef = doc(db, `artifacts/${appId}/users/${userId}/tasks`, taskId);
-    await updateDoc(taskDocRef, { status: newStatus });
-  };
+            <div>
+                <!-- Daftar Tugas & Tombol Download Baru -->
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-white">Daftar Tugas Anda (Diurutkan)</h2>
+                    <!-- Tombol Download HANYA UNTUK GOOGLE USER -->
+                    <button id="download-my-data-button" class="hidden bg-green-600 text-white text-sm font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Download Dataku
+                    </button>
+                </div>
 
-  window.deleteTask = async (taskId) => {
-    if (!userId) return;
-    if (confirm('Yakin ingin menghapus tugas ini?')) {
-      const taskDocRef = doc(db, `artifacts/${appId}/users/${userId}/tasks`, taskId);
-      await deleteDoc(taskDocRef);
-    }
-  };
+                <!-- Panel Admin DIHAPUS -->
 
-  // Gradient efek
-  const gradientEl = document.querySelector('.gradient');
-  if (gradientEl) {
-    let targetX = window.innerWidth / 2;
-    let targetY = window.innerHeight / 2;
-    let currentX = targetX;
-    let currentY = targetY;
-    document.addEventListener('mousemove', (e) => {
-      targetX = e.clientX;
-      targetY = e.clientY;
-    });
-    function animate() {
-      currentX += (targetX - currentX) * 0.1;
-      currentY += (targetY - currentY) * 0.1;
-      gradientEl.style.left = `${(currentX / window.innerWidth) * 100}%`;
-      gradientEl.style.top = `${(currentY / window.innerHeight) * 100}%`;
-      requestAnimationFrame(animate);
-    }
-    animate();
-  } else {
-    console.warn("Elemen .gradient tidak ditemukan di halaman.");
-  }
+                <div id="task-list" class="space-y-4">
+                    <p id="loading-tasks" class="text-slate-300 text-center">Memuat tugas...</p>
+                </div>
+            </div>
+        </main>
+    </div>
 
-});
- // === Modal Logic ===
-  const privacyBtn = document.getElementById("privacy-btn");
-  const privacyModal = document.getElementById("privacy-modal");
-  const closePrivacy = document.getElementById("close-privacy");
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp, doc, updateDoc, deleteDoc, getDocs, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  privacyBtn.addEventListener("click", () => {
-    privacyModal.classList.remove("hidden");
-  });
+        // --- Fungsi utilitas aman ---
+        function safeAddEventListener(elementId, event, handler) {
+             try {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.addEventListener(event, handler);
+                } else {
+                    console.warn(`[WARN] Elemen dengan ID "${elementId}" tidak ditemukan saat mencoba menambah listener.`);
+                }
+            } catch(e) {
+                 console.error(`[ERROR] Gagal menambah listener ke #${elementId}:`, e);
+            }
+        }
 
-  closePrivacy.addEventListener("click", () => {
-    privacyModal.classList.add("hidden");
-  });
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("[DEBUG] Halaman HTML selesai dimuat. Memulai skrip.");
 
-  // Klik di luar modal untuk tutup
-  privacyModal.addEventListener("click", (e) => {
-    if (e.target === privacyModal) {
-      privacyModal.classList.add("hidden");
-    }
-  });
-</script>
+            // Konfigurasi Firebase
+            const firebaseConfig = {
+                apiKey: "AIzaSyC4WwUhxG5XROTr5lSHvhDS4zj2Lqmw1U0",
+                authDomain: "asisten-tugas-pribadi.firebaseapp.com",
+                projectId: "asisten-tugas-pribadi",
+                storageBucket: "asisten-tugas-pribadi.appspot.com",
+                messagingSenderId: "994319187177",
+                appId: "1:994319187177:web:58ebbc1fce8645eabd4478"
+            };
+
+            let db, auth, userId, unsubscribeTasks;
+            const appId = 'asisten-tugas-pribadi';
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            console.log("[DEBUG] Firebase diinisialisasi.");
+
+            // --- Elemen UI ---
+            const loginView = document.getElementById('login-view');
+            const userView = document.getElementById('user-view');
+            const mainContent = document.getElementById('main-content');
+            const userEmailSpan = document.getElementById('user-email');
+            const taskForm = document.getElementById('task-form');
+            const taskListDiv = document.getElementById('task-list');
+            const downloadMyDataButton = document.getElementById('download-my-data-button'); // Tombol download baru
+            
+            // --- Fungsi Admin Dihapus ---
+            // const loadUserListForAdmin = ... (DIHAPUS)
+            // const checkAdminStatus = ... (DIHAPUS)
+
+            // --- onAuthStateChanged (Disederhanakan) ---
+            onAuthStateChanged(auth, async (user) => {
+                // Sembunyikan semua elemen dinamis di awal
+                mainContent.classList.add('hidden');
+                userView.classList.add('hidden');
+                loginView.classList.add('hidden');
+                downloadMyDataButton.classList.add('hidden'); 
+
+                if (user) {
+                    userId = user.uid;
+                    userEmailSpan.innerHTML = user.isAnonymous ? `Tamu <span class="font-normal text-slate-400 text-xs">(${user.uid.substring(0, 6)}...)</span>` : user.email;
+                    
+                    userView.classList.remove('hidden');
+                    mainContent.classList.remove('hidden');
+
+                    // Tampilkan tombol download HANYA jika bukan tamu
+                    if (!user.isAnonymous) {
+                        downloadMyDataButton.classList.remove('hidden');
+                    }
+
+                    listenToTasks();
+                } else {
+                    userId = null;
+                    loginView.classList.remove('hidden'); // Tampilkan view login
+                    if (unsubscribeTasks) unsubscribeTasks();
+                    renderTasks([]);
+                }
+            });
+
+            // --- Path Collection ---
+            const getTasksCollectionRef = (targetUserId) => {
+                const idToUse = targetUserId || userId;
+                if (!idToUse) {
+                    console.error("[DEBUG] GAGAL: getTasksCollectionRef dipanggil tetapi ID pengguna adalah null!");
+                    return null;
+                }
+                return collection(db, `artifacts/${appId}/users/${idToUse}/tasks`);
+            }
+
+            // --- FUNGSI ADD NEW TASK (YANG HILANG) ---
+            const addNewTask = async (taskData) => {
+                 if (!userId) {
+                     alert("Error: Anda tidak terautentikasi.");
+                     return false;
+                 }
+                 try {
+                     const urgency = Number(taskData.urgency);
+                     const importance = Number(taskData.importance); // Menggunakan importance
+                     const time = Number(taskData.time);
+
+                     if (isNaN(urgency) || isNaN(importance) || isNaN(time)) {
+                         throw new Error("Data input tidak valid. Gagal menghitung skor.");
+                     }
+                     
+                     const priorityScore = parseFloat(((urgency * 3.5) + (importance * 2.5) - (time * 0.5)).toFixed(2));
+                     
+                     const fullTaskData = {
+                         name: taskData.name,
+                         urgency: urgency,
+                         importance: importance, // Menggunakan importance
+                         time: time,
+                         deadline: taskData.deadline, // Menambahkan deadline
+                         priorityScore: priorityScore,
+                         status: 'pending',
+                         createdAt: serverTimestamp()
+                     };
+
+                     const collectionRef = getTasksCollectionRef(userId);
+                     if (!collectionRef) throw new Error("Referensi koleksi tidak valid (userId null).");
+                     
+                     await addDoc(collectionRef, fullTaskData);
+                     return true;
+                 } catch (error) {
+                     console.error("GAGAL MENAMBAHKAN TUGAS:", error);
+                     alert("GAGAL: " + error.message);
+                     return false;
+                 }
+             };
+
+            // --- Submit Form (diperbarui) ---
+            taskForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (!userId) {
+                    alert("Error: Anda tidak terautentikasi.");
+                    return;
+                }
+
+                const taskName = document.getElementById('task-name').value;
+                const urgency = parseInt(document.getElementById('task-urgency').value);
+                const importance = parseInt(document.getElementById('task-importance').value); // Menggunakan importance
+                const time = parseFloat(document.getElementById('task-time').value);
+                const deadlineValue = document.getElementById('task-deadline').value;
+                // Konversi tanggal ke format yang benar untuk Firestore Timestamp
+                const deadlineDate = deadlineValue ? new Date(deadlineValue) : null;
+                // Penting: Set waktu ke akhir hari (23:59:59) agar deadline "hari ini" valid
+                if (deadlineDate) deadlineDate.setHours(23, 59, 59);
+
+                const taskData = {
+                    name: taskName,
+                    urgency,
+                    importance, // Menggunakan importance
+                    time,
+                    // Simpan sebagai Firestore Timestamp
+                    deadline: deadlineDate ? serverTimestamp(deadlineDate) : null 
+                };
+
+                const success = await addNewTask(taskData);
+                if (success) {
+                    e.target.reset();
+                    document.getElementById('urgency-value').textContent = '3 (Sedang)';
+                    document.getElementById('importance-value').textContent = '3 (Cukup Penting)';
+                }
+            });
+
+            // --- Login/Logout ---
+            const signInWithGoogle = () => signInWithPopup(auth, new GoogleAuthProvider()).catch(err => console.error(err));
+            const signInAsGuest = () => signInAnonymously(auth).catch(err => console.error(err));
+            const doSignOut = () => signOut(auth).catch(err => console.error(err));
+            safeAddEventListener('login-button', 'click', signInWithGoogle);
+            safeAddEventListener('guest-login-button', 'click', signInAsGuest);
+            safeAddEventListener('logout-button', 'click', doSignOut);
+
+            // --- FUNGSI EKSPOR BARU (NON-ADMIN) ---
+            const exportMyDataAsCsv = async () => {
+                if (!userId) {
+                    alert("Silakan login terlebih dahulu.");
+                    return;
+                }
+                console.log(`[DEBUG] Memulai ekspor untuk user ID: ${userId}`);
+                
+                try {
+                    const tasksCollectionRef = getTasksCollectionRef(userId);
+                    const tasksSnapshot = await getDocs(query(tasksCollectionRef));
+                    const tasks = [];
+                    tasksSnapshot.forEach(doc => tasks.push({ id: doc.id, ...doc.data() }));
+
+                    if (tasks.length === 0) {
+                        alert("Anda tidak memiliki data tugas untuk diunduh.");
+                        return;
+                    }
+
+                    const headers = ['ID Tugas', 'Nama Tugas', 'Urgensi', 'Pentingnya', 'Estimasi Waktu (Jam)', 'Deadline', 'Skor Prioritas', 'Status', 'Dibuat Tanggal'];
+                    
+                    const rows = tasks.map(task => {
+                        const taskName = (task.name || '').includes(',') ? `"${task.name}"` : task.name;
+                        // Format tanggal deadline dan tanggal dibuat
+                        const deadline = task.deadline ? new Date(task.deadline.seconds * 1000).toLocaleDateString('id-ID') : "N/A";
+                        const createdAt = task.createdAt ? new Date(task.createdAt.seconds * 1000).toLocaleString('id-ID') : 'N/A';
+                        
+                        return [
+                            task.id, 
+                            taskName, 
+                            task.urgency, 
+                            task.importance, 
+                            task.time, 
+                            deadline, 
+                            task.priorityScore, 
+                            task.status, 
+                            createdAt
+                        ].join(',');
+                    });
+
+                    const csvContent = [headers.join(','), ...rows].join('\n');
+                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const link = document.createElement("a");
+                    const url = URL.createObjectURL(blob);
+                    const date = new Date().toISOString().slice(0, 10);
+                    link.setAttribute("href", url);
+                    link.setAttribute("download", `prio_data_saya_${date}.csv`);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    console.log("[DEBUG] Ekspor selesai.");
+
+                } catch (error) {
+                    console.error("[DEBUG] Gagal mengunduh data:", error);
+                    alert("Gagal mengunduh data: " + error.message);
+                }
+            };
+            // Pasang listener ke tombol download yang baru
+            safeAddEventListener('download-my-data-button', 'click', exportMyDataAsCsv);
+
+
+            // --- Baca & Tampilkan Data ---
+            function listenToTasks() {
+                if (!userId) return;
+                if (unsubscribeTasks) unsubscribeTasks();
+                const q = query(getTasksCollectionRef(userId));
+                if (!q) return;
+                unsubscribeTasks = onSnapshot(q, (snapshot) => {
+                    let tasks = [];
+                    snapshot.forEach(doc => tasks.push({ id: doc.id, ...doc.data() }));
+                    tasks.sort((a, b) => (b.priorityScore ?? -Infinity) - (a.priorityScore ?? -Infinity));
+                    renderTasks(tasks);
+                }, (error) => {
+                    console.error("[DEBUG] Gagal mendengarkan data (listenToTasks):", error);
+                });
+            }
+
+            function renderTasks(tasks) {
+                const loadingP = document.getElementById('loading-tasks');
+                if(loadingP) loadingP.style.display = 'none';
+
+                if (tasks.length === 0) {
+                    taskListDiv.innerHTML = `<div class="text-center p-8 bg-white rounded-lg shadow-md"><h3 class="font-semibold text-lg">Tidak ada tugas!</h3><p class="text-slate-500 mt-1">Tambahkan tugas baru di atas untuk memulai.</p></div>`;
+                    return;
+                }
+
+                taskListDiv.innerHTML = tasks.map(task => {
+                    const priorityScoreNum = Number(task.priorityScore);
+                    const priorityText = isNaN(priorityScoreNum) ? 'N/A' :
+                                     priorityScoreNum > 15 ? 'Tinggi' :
+                                     priorityScoreNum > 8 ? 'Sedang' : 'Rendah';
+                    const priorityClass = isNaN(priorityScoreNum) ? 'priority-low' :
+                                        priorityText === 'Tinggi' ? 'priority-high' :
+                                        priorityText === 'Sedang' ? 'priority-medium' : 'priority-low';
+                    const scoreDisplay = isNaN(priorityScoreNum) ? 'NaN' : priorityScoreNum.toFixed(1);
+                    
+                    // Format deadline untuk ditampilkan
+                    const deadlineText = task.deadline ? new Date(task.deadline.seconds * 1000).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) : 'Tidak Ditentukan';
+
+                    return `
+                    <div class="task-card bg-white p-4 rounded-xl shadow-md flex items-start gap-4 ${task.status === 'completed' ? 'opacity-60' : ''}">
+                        <input type="checkbox" onchange="window.toggleTaskStatus('${task.id}', '${task.status}')" class="mt-1.5 h-5 w-5 rounded" ${task.status === 'completed' ? 'checked' : ''}>
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-start">
+                                <p class="font-semibold text-lg ${task.status === 'completed' ? 'line-through' : ''}">${task.name}</p>
+                                <span class="priority-badge ${priorityClass}">${priorityText} (${scoreDisplay})</span>
+                            </div>
+                            <div class="text-sm text-slate-500 mt-2 flex flex-col sm:flex-row sm:gap-4">
+                                <span>Urgensi: <strong>${task.urgency}</strong></span>
+                                <span>Pentingnya: <strong>${task.importance}</strong></span> <!-- Menggunakan importance -->
+                                <span>Waktu: <strong>${task.time} jam</strong></span>
+                            </div>
+                             <div class="text-sm text-slate-700 mt-2 font-medium">
+                                <span>Deadline: <strong>${deadlineText}</strong></span>
+                            </div>
+                        </div>
+                        <button onclick="window.deleteTask('${task.id}')" class="text-slate-400 hover:text-red-500 p-1">
+                            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" /></svg>
+                        </button>
+                    </div>`;
+                }).join('');
+            }
+
+            // Slider
+            const urgencySlider = document.getElementById('task-urgency');
+            const importanceSlider = document.getElementById('task-importance');
+            const urgencyValue = document.getElementById('urgency-value');
+            const importanceValue = document.getElementById('importance-value');
+            const urgencyLabels = { 1: 'Sangat Rendah', 2: 'Rendah', 3: 'Sedang', 4: 'Mendesak', 5: 'Sangat Mendesak' };
+            const importanceLabels = { 1: 'Tidak Penting', 2: 'Kurang Penting', 3: 'Cukup Penting', 4: 'Penting', 5: 'Sangat Penting' };
+            urgencySlider.addEventListener('input', () => { urgencyValue.textContent = `${urgencySlider.value} (${urgencyLabels[urgencySlider.value]})`; });
+            importanceSlider.addEventListener('input', () => { importanceValue.textContent = `${importanceSlider.value} (${importanceLabels[importanceSlider.value]})`; });
+
+            // --- Fungsi Global (onclick) ---
+            window.toggleTaskStatus = async (taskId, currentStatus) => {
+                if (!userId) return;
+                const newStatus = currentStatus === 'pending' ? 'completed' : 'pending';
+                const taskDocRef = doc(db, `artifacts/${appId}/users/${userId}/tasks`, taskId);
+                await updateDoc(taskDocRef, { status: newStatus });
+            };
+
+            window.deleteTask = async (taskId) => {
+                if (!userId) return;
+                if (confirm('Yakin ingin menghapus tugas ini?')) {
+                    const taskDocRef = doc(db, `artifacts/${appId}/users/${userId}/tasks`, taskId);
+                    await deleteDoc(taskDocRef);
+                }
+            };
+
+            // --- Logika Modal Privasi & Gradient (Dipindah ke dalam) ---
+            safeAddEventListener("privacy-btn", "click", () => {
+                const privacyModal = document.getElementById("privacy-modal");
+                if (privacyModal) privacyModal.classList.remove("hidden");
+            });
+
+            safeAddEventListener("close-privacy", "click", () => {
+                const privacyModal = document.getElementById("privacy-modal");
+                if (privacyModal) privacyModal.classList.add("hidden");
+            });
+
+            safeAddEventListener("privacy-modal", "click", (e) => {
+                if (e.target.id === "privacy-modal") {
+                    e.target.classList.add("hidden");
+                }
+            });
+            
+            const gradientEl = document.querySelector('.gradient');
+            if (gradientEl) {
+                let targetX = window.innerWidth / 2;
+                let targetY = window.innerHeight / 2;
+                let currentX = targetX;
+                let currentY = targetY;
+                document.addEventListener('mousemove', (e) => {
+                    targetX = e.clientX;
+                    targetY = e.clientY;
+                });
+                function animate() {
+                    currentX += (targetX - currentX) * 0.1;
+                    currentY += (targetY - currentY) * 0.1;
+                    gradientEl.style.left = `${(currentX / window.innerWidth) * 100}%`;
+                    gradientEl.style.top = `${(currentY / window.innerHeight) * 100}%`;
+                    requestAnimationFrame(animate);
+                }
+                animate();
+            } else {
+                console.warn("Elemen .gradient tidak ditemukan di halaman.");
+            }
+
+        }); // Penutup 'DOMContentLoaded'
+    </script>
 </body>
 </html>
-~
+
